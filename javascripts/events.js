@@ -19,6 +19,15 @@ const changeButtonText = () => {
 const moveToCart = (e) => {
   const fishCard = $(e.target).closest('.fish');
   $('#snagged').append(fishCard);
+  $(e.target).text('Remove from Cart'); // changes text after its in the cart
+  $(e.target).on('click', removeFromCart); // changes event listener to remove
+};
+
+const removeFromCart = (e) => {
+  const fishCard = $(e.target).closest('.fish'); // finding closest parent with the class of "fish"
+  $('#available').append(fishCard);
+  $(e.target).text('Add to Cart');
+  $(e.target).on('click', moveToCart);
 };
 
 const bindEvents = () => {
