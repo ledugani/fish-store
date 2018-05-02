@@ -25,7 +25,7 @@ const discount = 0.2;
 
 const applySale = () => {
   $('.on-sale').each((i, fishCard) => {
-    const basePriceElem = $(fishCard).find('.price');
+    const basePriceElem = $(fishCard).find('.price'); // wrap fish card so jquery can read it, .find locates the element with the class "price"
     const basePrice = basePriceElem.html() * 1;
     const newPrice = (basePrice * (1 - discount)).toFixed(2);
     basePriceElem.html(newPrice); // passing setter to put newPrice in html
@@ -56,10 +56,21 @@ const changeButtonText = () => {
 const moveToCart = (e) => {
   const fishCard = $(e.target).closest('.fish');
   $('#snagged').append(fishCard);
+  $(e.target).text('Remove from Cart').removeClass('add btn-danger').addClass('remove btn-info'); // changes text after its in the cart
+  // $(e.target).on('click', removeFromCart); // changes event listener to remove
+};
+
+const removeFromCart = (e) => {
+  const fishCard = $(e.target).closest('.fish'); // finding closest parent with the class of "fish"
+  $('#available').append(fishCard);
+  $(e.target).text('Add to Cart').removeClass('remove btn-info').addClass('add btn-danger');
+  // $(e.target).on('click', moveToCart);
 };
 
 const bindEvents = () => {
-  $('button.add').click(moveToCart);
+  $('body').on('click', '.remove', removeFromCart);
+  $('body').on('click', '.add', moveToCart);
+  // $('button.add').click(moveToCart);
   $('#show-sale').click(() => {
     changeButtonText();
     filterFish();
